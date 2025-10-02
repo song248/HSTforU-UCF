@@ -1,0 +1,60 @@
+DATA:
+  DATASET: ucfcrime
+  DATA_PATH: ./UCF-Crime-frames
+  DATASET_SCENE: ''
+  IMG_SIZE: [224, 224]
+  BATCH_SIZE: 4
+  NUM_INPUT_FRAMES: 5
+  FRAME_STEP: 6
+  MIN_FRAMES: 6
+  NUM_WORKERS: 16
+  PIN_MEMORY: True
+  INTERPOLATION: bicubic
+  ALBUMENTATIONS: False
+
+AUG:
+  HFLIP: True
+  COLOR_JITTER: 0.4
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  REPROB: 0.25
+  REMODE: pixel
+  RECOUNT: 1
+
+MODEL:
+  NAME: HSTforU_UCFCrime
+  PRETRAINED: ckpt/ckpt_shanghaitech.pth
+  RESUME: ''
+  DROP_RATE: 0.0
+  DROP_PATH_RATE: 0.1
+
+TRAIN:
+  START_EPOCH: 0
+  EPOCHS: 3
+  WARMUP_EPOCHS: 5
+  WEIGHT_DECAY: 0.05
+  BASE_LR: 5e-5
+  WARMUP_LR: 5e-7
+  MIN_LR: 5e-6
+  AUTO_RESUME: True
+  LR_SCHEDULER:
+    NAME: cosine
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+  OPTIMIZER:
+    NAME: adamw
+    EPS: 1e-8
+    BETAS: (0.9, 0.999)
+    MOMENTUM: 0.9
+
+TEST:
+  SHUFFLE: False
+
+OUTPUT: ./output/ucfcrime
+TAG: ucfcrime_exp
+SAVE_FREQ: 10
+PRINT_FREQ: 10
+SEED: 42
+EVAL_MODE: False
+THROUGHPUT_MODE: False
+LOCAL_RANK: 0
+GPUS: 0
